@@ -16,6 +16,7 @@ from .accuracy_utils import (
     INT_DTYPES,
     POINTWISE_SHAPES,
     SCALARS,
+    SkipVersion,
     gems_assert_close,
     gems_assert_equal,
     to_reference,
@@ -1881,11 +1882,13 @@ def test_accuracy_polar(shape, dtype):
 
 
 @pytest.mark.lerp
+@pytest.mark.skipif(
+    flag_gems.vendor_name == "kunlunxin" and SkipVersion("torch", "<2.5"),
+    reason="The half dtype is only supported on torch >= 2.5.",
+)
 @pytest.mark.parametrize("shape", POINTWISE_SHAPES)
 @pytest.mark.parametrize("dtype", FLOAT_DTYPES)
 def test_accuracy_lerp(shape, dtype):
-    # if flag_gems.vendor_name == "kunlunxin" and dtype is torch.half:
-    #     pytest.skip("wait lerp cpu half impl")
 
     torch.manual_seed(0)
 
@@ -1915,11 +1918,13 @@ def test_accuracy_lerp(shape, dtype):
 
 @pytest.mark.inplace
 @pytest.mark.lerp_
+@pytest.mark.skipif(
+    flag_gems.vendor_name == "kunlunxin" and SkipVersion("torch", "<2.5"),
+    reason="The half dtype is only supported on torch >= 2.5.",
+)
 @pytest.mark.parametrize("shape", POINTWISE_SHAPES)
 @pytest.mark.parametrize("dtype", FLOAT_DTYPES)
 def test_accuracy_lerp_(shape, dtype):
-    # if flag_gems.vendor_name == "kunlunxin" and dtype is torch.half:
-    #     pytest.skip("wait lerp cpu half impl")
 
     torch.manual_seed(0)
 
